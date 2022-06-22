@@ -3,6 +3,9 @@
 Runs script and performs disable/delete
 ComputerObjectCleanup.ps1 -server server@domain.com -credential username@domain.com 
 .EXAMPLE
+Runs script internally without specifying -server
+ComputerObjectCleanup.ps1 -credential username@domain.com
+.EXAMPLE
 Shows what the script will do to ADObjects
 ComputerObjectCleanup.ps1 -Server server@domain.com -credential username@domain.com -whatif
 .EXAMPLE
