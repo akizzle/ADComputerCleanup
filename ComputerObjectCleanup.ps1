@@ -48,9 +48,9 @@ function Get-Domains{
 # uses try/catch for error handling and will stop script if there is an issue connecting to an AD server. 
 try {
    if($report -eq $true){
-      $($(Get-Domains | foreach {
+      $($(Get-Domains | Forreach-Object {
          get-adcomputer -Server $_ -filter 'LastLogonDate -ne "$null" -and LastLogonDate -lt $disablecutoffdate' -Properties DNSHostName, OperatingSystem, Enabled, Description, LastLogonDate, SAMAccountName -Credential $credential
-      }) | foreach{
+      }) | Forreach-Object {
          if ($_.LastLogonDate -lt $DeleteCutoffDate){
             $_.Action = 'Delete'
             $_
@@ -60,7 +60,7 @@ try {
          }
       }) | Sort-Object LastLogonDate | Format-Table Action, DNSHostName, LastLogonDate, OperatingSystem, Description
    }else{
-      Get-Domains | foreach {
+      Get-Domains | Forreach-Object {
          $adobjects = get-adcomputer -Server $_ -filter 'LastLogonDate -ne "$null" -and LastLogonDate -lt $disablecutoffdate' -Properties DNSHostName, OperatingSystem, Enabled, Description, LastLogonDate, SAMAccountName -Credential $credential | Sort-Object LastLogonDate
          foreach($computer in $adobjects){
             if($computer.LastLogonDate -lt $DeleteCutoffDate){
